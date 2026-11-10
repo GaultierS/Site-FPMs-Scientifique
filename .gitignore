@@ -1,24 +1,61 @@
-# build output
-dist/
+# =========================
+# Python
+# =========================
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
 
-# generated types
-.astro/
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+!.env.example
 
-# dependencies
+# =========================
+# SQLite
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# Node.js / Astro
+# =========================
 node_modules/
+dist/
+.astro/
+.npm/
 
-# logs
+# =========================
+# Logs
+# =========================
+*.log
+*.tmp
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
-.env
-.env.production
-
-# macOS-specific files
-.DS_Store
-
-# jetbrains setting folder
+# =========================
+# IDE
+# =========================
+.vscode/
 .idea/
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# =========================
+# Temporary files
+# =========================
+*.swp
