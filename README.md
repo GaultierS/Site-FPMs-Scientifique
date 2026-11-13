@@ -1,4 +1,49 @@
-# Astro Starter Kit: Basics
+# Site du Cercle Scientifique F.P.Ms
+
+## Frameworks
+
+### Astro
+
+Framework pour le frontend du site. Il s'agit du framework utilisé par la commission web? Il va permettre de créer des pages similaires à celles des sites fédé déjà existant sans trop de difficultés. Le template utilisé est le plus simple de ceux mit à disposition.
+
+### Flask
+
+Framework pour le backend. Sa structure est plus simple que celle de Django et est un peu plus simple à utiliser pour les petits projets comme le notre.
+
+## Structure du site
+
+```text
+/
+├── backend
+│   ├── app
+│   ├── instances
+│   ├── requirements.txt
+│   └── run.py
+└── frontend
+    ├── public/
+    │   ├── favicon.ico
+    │   └── favicon.svg
+    ├── src
+    │   ├── assets
+    │   │   └── astro.svg
+    │   ├── components
+    │   │   └── Welcome.astro
+    │   ├── layouts
+    │   │   └── Layout.astro
+    │   └── pages
+    │       └── index.astro
+    └── package.json
+```
+
+
+
+
+
+
+
+
+
+# README.md de base de astro (Astro Starter Kit: Basics)
 
 ```sh
 npm create astro@latest -- --template basics
