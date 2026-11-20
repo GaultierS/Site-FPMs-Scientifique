@@ -1,1 +1,10 @@
 Notes du projet, expliquant le rôles de chaque fichier
+
+- gitignore = ignore les fichiers temporaires créés lors du lancement de backend et frontend
+
+- readme = documentation du projet
+
+--------------------------------------------------
+                    BACKEND
+
+- 
