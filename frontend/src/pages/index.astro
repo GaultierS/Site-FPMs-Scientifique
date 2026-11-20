@@ -1,7 +1,96 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import { Image } from "astro:assets";
+
+import Layout from "@layouts/Layout.astro";
+
+import local from "@assets/local.jpg";
+import comitePhoto from "@assets/comite.webp";
+
+const comite = [
+  { role: "Président", name: "Antonin Meunier" },
+  { role: "Trésorier", name: "Romain Bequet" },
+  { role: "Délégué matériel", name: "Baptiste Spriet" },
+];
 ---
 
-<Layout>
-	<h1>Welcommmmmmmme every body</h1>
+<Layout title="Accueil">
+  <main class="container mx-auto space-y-6 px-2 pt-4">
+    <section
+      class="relative -z-10 h-[calc(100vh_-_15rem)] overflow-hidden rounded-3xl shadow-xl"
+    >
+      <Image
+        class="-z-10 h-full object-cover"
+        src={local}
+        alt="Local du Scientifique, situé au 7ème étage de la Cité Houzeau."
+        quality={30}
+        width={1920}
+        height={1280}
+        format="webp"
+      />
+      <div class="absolute inset-0 flex items-end pb-16">
+        <h1
+          class="mx-auto w-[100%-3rem] max-w-4xl px-8 pe-16 text-4xl font-semibold text-white shadow-black text-shadow-title"
+        >
+          Bienvenue sur le site du
+          <span
+            class="bg-gradient-to-r from-blue-900 to-blue-600 bg-clip-text text-transparent drop-shadow-white text-shadow-none"
+            >Cercle Scientifique</span
+          >
+          de la Faculté Polytechnique de Mons !
+        </h1>
+      </div>
+    </section>
+    <section
+      class="mx-auto max-w-5xl space-y-2 rounded-lg border-l-4 border-blue-900 bg-white px-6 py-3 font-medium shadow-box"
+    >
+      <h2 class="text-xl">Qu'est-ce que le Cercle Scientifique ?</h2>
+      <p>
+        Le <strong>Cercle Scientifique</strong> est l'organisme
+        représentatif et folklorique des étudiants de la Faculté Polytechnique
+        de Mons. Cette Fédération est dirigée par la
+        <strong>Fédérale</strong> et est composée de douze
+        <strong>Cercles fédérés</strong>, six <strong>Commissions</strong> et quatre
+        <strong>Régionales</strong>.
+      </p>
+
+      <ul>
+        <li><h3>Ses buts principaux sont :</h3></li>
+        <li>
+          - La représentation des étudiants Polytech auprès des instances
+          académiques
+        </li>
+        <li>
+          - L'organisation d'événements folkloriques, culturels,
+          philanthropiques, sportifs et festifs
+        </li>
+      </ul>
+    </section>
+    <section
+      class="mx-auto max-w-5xl rounded-lg border-r-4 border-blue-900 bg-white font-medium shadow-box sm:flex"
+    >
+      <div class="aspect-video flex-1 overflow-hidden">
+        <Image
+          class="h-full w-full rounded-lg object-cover object-top scale-110"
+          src={comitePhoto}
+          alt="Comité de la Fédération des étudiants de la Faculté Polytechnique de Mons (FPMs)"
+          quality={95}
+          format="webp"
+        />
+      </div>
+      <div
+        class="inline-flex w-full flex-col justify-center px-6 py-6 sm:w-auto"
+      >
+        <h2 class="mx-auto max-w-fit pb-4 text-xl">Le comité :</h2>
+        <ul>
+          {
+            comite.map((member) => (
+              <li>
+                <strong>{member.role} :</strong> {member.name}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
 </Layout>
