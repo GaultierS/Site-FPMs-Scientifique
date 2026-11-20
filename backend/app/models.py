@@ -3,18 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import CheckConstraint
 
 # Initialisation de db ici (comme dans votre exemple Docker) pour éviter les imports circulaires
-db = SQLAlchemy()
+db = SQLAlchemy() # les classes db.x vont hériter de tous les pouvoirs de SQL ALCHEMY
 
 
-def utcnow():
+def utcnow():        # évite les bugs  de fuseaux horaires du serveur (th + notation moderne)
     return datetime.now(timezone.utc)
 
 
 # Table d'association N:N pure : Utilisateur <-> Flag ("Possede")
 utilisateur_flag = db.Table(
     "utilisateur_flag",
-    db.Column("id_sso", db.String(100), db.ForeignKey("utilisateur.id_sso", ondelete="CASCADE"), primary_key=True),
-    db.Column("id_flag", db.Integer, db.ForeignKey("flag.id_flag", ondelete="CASCADE"), primary_key=True),
+    db.Column("id_sso", db.String(100), db.ForeignKey("utilisateur.id_sso", ondelete="CASCADE"), primary_key=True), # 2 utilisateurs ne peuvent donc pas posséder le même flag / le même id
+    db.Column("id_flag", db.Integer, db.ForeignKey("flag.id_flag", ondelete="CASCADE"), primary_key=True),      #ondelete casade = si utili ou flag supp -> toutes ses lignes correspondantes dans cette table seront supp
 )
 
 
@@ -28,7 +28,7 @@ class Utilisateur(db.Model):
     email = db.Column(db.String(150), unique=True, nullable=True)
 
     # Relations
-    flags = db.relationship("Flag", secondary=utilisateur_flag, back_populates="utilisateurs")
+    flags = db.relationship("Flag", secondary=utilisateur_flag, back_populates="utilisateurs")  #db.relationship = raccourci python -> si on a un obet imp -> on peut écrire imp.utilisateur.email pour lire directement l'email sans écrire de jointure sql (jointure <- combine des informations)
     paniers_crees = db.relationship("Panier", foreign_keys="Panier.createur_id_sso", back_populates="createur")
     changements_etat = db.relationship("ChangeEtat", back_populates="utilisateur")
     mouvements_outils = db.relationship("AjouteRetire", back_populates="utilisateur")
@@ -60,7 +60,7 @@ class Flag(db.Model):
 class Outil(db.Model):
     __tablename__ = "outil"
 
-    id_outil = db.Column(db.Integer, primary_key=True)
+    id_outil = db.Column(db.Integer, primary_key=True)   # integer + ..=True -> implémente automatiquement 1,2,3...
     nom = db.Column(db.String(120), nullable=False)
     quantite_disponible = db.Column(db.Integer, nullable=False, default=0)
     image = db.Column(db.String(255), nullable=True)
@@ -269,4 +269,24 @@ class Reservation(db.Model):
         # Garantit qu'une réservation cible soit une imprimante, soit un local (jamais les deux, jamais aucun)
         CheckConstraint(
             "(id_imprimante IS NOT NULL AND id_local IS NULL) OR (id_imprimante IS NULL AND id_local IS NOT NULL)",
-            name="
+            name="check_cible_reservation_exclusive",
+        ),
+    )
+
+    utilisateur = db.relationship("Utilisateur", back_populates="reservations")
+    etat = db.relationship("Etat", back_populates="reservations")
+    imprimante = db.relationship("Imprimante", back_populates="reservations")
+    local = db.relationship("Local", back_populates="reservations")
+
+    def to_dict(self):
+        return {
+            "id_reservation": self.id_reservation,
+            "debut": self.debut.isoformat(),
+            "fin": self.fin.isoformat(),
+            "id_sso": self.id_sso,
+            "commentaire": self.commentaire,
+            "groupe": self.groupe,
+            "etat": self.etat.to_dict() if self.etat else None,
+            "id_imprimante": self.id_imprimante,
+            "id_local": self.id_local,
+        }
