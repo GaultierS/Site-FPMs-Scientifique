@@ -7,4 +7,51 @@ Notes du projet, expliquant le rôles de chaque fichier
 --------------------------------------------------
                     BACKEND
 
-- 
+=> (API Python / Flask)
+
+- requirements : liste des bibliothèques python requises (flask, flask cors etc ...)
+-> installe les paquets 
+
+- run.py = sscript principal qui appelle create_app() et démarre le serveur web flask
+-> ouvre un serveur local (http.localhost...) prêt à recevoir les requ$etes http du frontend
+
+- app/init = initialise l'application flask, configure le chemin de la basse de données SQlite, active les règles cors pour autoriser astro (localhost:4321)
+-> au premier démarrage de run.py, ce fichier créera automatiquement le dossier backend/instance/ ainsi que le ficheir de base de données site.db contenant toutes vos tables vide
+
+- app/models.py = définit la structure de la base de données relationnelle en Python (classe utilisateur, outil, panier ...) et leur relation
+-> chaque classe et contrainte écrite dans ce fichier sera traduite en table et colonnes SQL réelles dans instance/site.db via db.create_all()
+
+- app/routes.py = défini les points d'entrée URls de l'API REST qui lisent ou modifient les données vie models.py et renvoient JSON
+-> chaque route ajoutée rendra une nouvelle fonctionnalité accessible au sit web (lister les outils disponibles, valider un panier, réserver une imprimante 3D) et modifiera le contenu de site.db à chaque requête post, put, delete
+
+-------------------------------------------------------
+                        FRONTEND
+
+=> interface utilisateur ASTRO
+
+- package.json & package-lock.json =  Rôle : Définissent les dépendances JavaScript/Astro du projet et verrouillent leurs versions exactes.   
+-> Modifications après remplissage : L'exécution de npm install remplira le dossier node_modules/ avec toutes les bibliothèques nécessaires.   
+
+- astro.config.mjs & tsconfig.json = Rôle : Paramètrent le comportement du framework Astro (port, intégrations) et les règles de vérification de types TypeScript.   
+-> Modifications après remplissage : Modifient la façon dont Astro compile vos pages et affiche les avertissements de syntaxe dans votre éditeur de code.
+
+- AGENTS.md = Rôle : Fichier de contexte et de conventions destiné aux assistants IA (Copilot, Cursor, etc.) travaillant sur le dépôt.   
+-> Modifications après remplissage : Oriente les suggestions de code générées par les IA pour qu'elles respectent l'architecture de votre projet.public/favicon.
+
+- ico & public/favicon.svg = Rôle : Fichiers statiques (icônes d'onglet navigateur) servis directement à la racine du site sans transformation.   
+-> Modifications après remplissage : Remplacent l'icône Astro par défaut par le logo de la FPMs ou du local scientifique dans l'onglet du navigateur.
+
+- src/layouts/ (ex: Layout.astro) = Rôle : Squelette HTML commun à toutes vos pages (balises <head>, barre de navigation, menu SSO, pied de page).   
+-> Modifications après remplissage : Toute modification apportée ici s'appliquera instantanément à l'ensemble des pages du site.
+
+- src/components/ (ex: OutilCard.astro, CalendrierReservation.astro) = Rôle : Éléments d'interface modulaires et réutilisables (une fiche outil avec son stock, un formulaire d'envoi de fichier 3D, un badge d'état).   
+-> Modifications après remplissage : Permettent d'assembler rapidement des interfaces complexes et dynamiques sans dupliquer le code HTML/CSS.
+
+- src/assets/ = Rôle : Stocke les images locales, logos et feuilles de style CSS globales que Astro optimise automatiquement lors de la compilation.   
+-> Modifications après remplissage : Les images ajoutées ici seront compressées et redimensionnées automatiquement lors du npm run build.
+
+- src/pages/index.astro & src/pages/test-api.astro = Rôle : Représentent les routes web visibles par l'utilisateur (/ pour l'accueil, /test-api pour tester la connexion avec Flask).   
+-> Modifications après remplissage : Une fois reliées à votre backend via fetch('http://localhost:5000/api/...'), ces pages afficheront en temps réel les données stockées dans votre base SQLite/PostgreSQL.
+
+- .astro/ (collections/, dev.json, settings.json, types.d.ts) = Rôle : Dossier technique généré et géré automatiquement par Astro.   
+-> Modifications après remplissage : Se met à jour automatiquement à chaque lancement de npm run dev pour synchroniser les types TypeScript internes.
